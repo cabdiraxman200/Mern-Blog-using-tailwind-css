@@ -2,20 +2,21 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from 'dotenv'
 import userRoutes from './routes/user_route.js'
+import authRoutes from './routes/auth.route.js';
 dotenv.config()
+const app= express();
+app.use(express.json());
 mongoose.connect(process.env.MONGO)
 .then(()=>{
-    console.log("connecting mangodb ")
+    console.log("connecting to mangodb ")
 })
 .catch((err)=>{
     console.log(err);
 })
 
-const app= express();
+
 app.listen(3000,()=>{
-    console.log("sever is running on 3000")
-})
-// app.get('/test',(req,res)=>{
-//   res.json({message:"API is working"}); 
-// })
+    console.log("sever is running on port 3000")
+});
 app.use("/api/user",userRoutes)
+app.use("/api/auth",authRoutes);

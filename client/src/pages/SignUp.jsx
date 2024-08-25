@@ -18,10 +18,10 @@ const SignUp = () => {
       <p className='text-sm mt-5 '>this demo project  you can Signup  with your email and password or with google</p>
       </div > 
       {/* right side */}
-      <div className='flex-1'>
+      <div className='flex-1  p-5 bg-slate-100'>
         <form className='flex flex-col gap-4'>
           <div>
-            <Label value='your userName'/>
+            <Label value='Your username'/>
           <TextInput
           type='text'
           placeholder='enter username'
@@ -29,7 +29,7 @@ const SignUp = () => {
           />
           </div>
           <div>
-            <Label value ="Your Email"/>
+            <Label value ="Your email"/>
             <TextInput
             type='text'
             placeholder='enter your email'
@@ -37,7 +37,7 @@ const SignUp = () => {
             />
           </div>
           <div>
-            <Label value ="Your Password"/>
+            <Label value ="Your password"/>
             <TextInput
             type='text'
             placeholder='enter your password'

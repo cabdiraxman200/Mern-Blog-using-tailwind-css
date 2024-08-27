@@ -2,12 +2,18 @@ import React, { useState } from 'react';
 import {Link ,useNavigate} from 'react-router-dom';
 import {Alert, Button, Label, Spinner, TextInput} from 'flowbite-react'
 import { data } from 'autoprefixer';
+import { useDispatch ,useSelector} from 'react-redux';
+import { signInStart,signInSucess,signInFailure } from '../redux/user/userSlice';
 
 
 const SignIn = () => {
   const [FormData,setFormData]= useState({});
-  const [errorMessage,setErrorMessage]=useState(null)
-  const [loading,setLoading]=useState(false);
+  // const [errorMessage,setErrorMessage]=useState(null)
+  // const [loading,setLoading]=useState(false);
+  // -> kan ku badal
+  const {loading,error:errorMessage} =useSelector(state=>state.user);
+  const dispatch= useDispatch();
+  
   const navigate=useNavigate();
   const handleChange =(e)=>{
     setFormData({...FormData,[e.target.id]:e.target.value.trim()});
@@ -15,11 +21,17 @@ const SignIn = () => {
   const handleSubmit=   async (e)=>{
     e.preventDefault();
     if(!FormData.email || !FormData.password){
-      return setErrorMessage("pleas fill out all fields");
+      // return setErrorMessage("pleas fill out all fields");
+         // change-> below
+     return dispatch(signInFailure("pleas fill out all fields"));
+
+
     }
     try{
-      setLoading(true);
-      setErrorMessage(null);
+      // setLoading(true);
+      // setErrorMessage(null);
+          //chang to distch
+          dispatch(signInStart());
       const res = await fetch('/api/auth/signin',{
         method:'POST',
         headers:{'Content-Type':'application/json'},
@@ -27,16 +39,21 @@ const SignIn = () => {
       })
       const data= await res.json();
       if(data.success===false){
-        return setErrorMessage(data.message);``
+        // return setErrorMessage(data.message);``
+        // change-> below
+        dispatch(signInFailure(data.errorMessage));
       }
       if(res.ok){
+        dispatch(signInSucess(data));
         navigate('/')
       }
       setLoading(false);
       
     }
     catch(error){
-      return setErrorMessage(error.message);
+      // return setErrorMessage(error.message);
+         // ku badal dispatch
+         dispatch(signInFailure(error.errorMessage));
     }
     setLoading(false);
   }
